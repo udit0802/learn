@@ -1,0 +1,32 @@
+<Configuration status="WARN">
+	<Appenders>
+		<Console name="CONSOLE" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n" />
+		</Console>
+		
+		<RollingFile name="AppFile"
+			fileName="/app/online/springsec/logs/springsec-app.log"
+			filePattern="/app/online/springsec/logs/archive/springsec-app-%d{yyyy-MM-dd}-%i.log">
+			<PatternLayout>
+				<pattern>%d [%t] %p %c - %m%n</pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+				<SizeBasedTriggeringPolicy size="100 MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+	</Appenders>
+	<Loggers>
+		<!-- Root logger will be used only to have loggers for third party libraries. -->
+		<Root level="DEBUG">
+			<AppenderRef ref="ThirdParty" level="DEBUG" />
+			<AppenderRef ref="CONSOLE" level="DEBUG"/>
+		</Root>
+		
+		<!-- This logger will be used to print logs from com.airtel.online package -->
+		<Logger name="com.airtel.online" level="DEBUG" additivity="false">
+			<AppenderRef ref="AppFile"/>
+		</Logger>
+	</Loggers>
+</Configuration>

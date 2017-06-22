@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<http auto-config="true">
+		<intercept-url pattern="/admin**" access="ROLE_ADMIN" />
+		
+		<form-login login-page="/login" default-target-url="/admin"
+            authentication-failure-url="/loginError" />
+        <logout logout-success-url="/logout" delete-cookies="JSESSIONID"/>
+        <access-denied-handler error-page="/403"/>
+        <!-- for the standard form -->
+        <!-- <http-basic/> -->
+	</http>
+	
+	<authentication-manager>
+	<!-- <authentication-provider user-service-ref="userDetailsService"/> -->
+		<authentication-provider>
+			<password-encoder hash="bcrypt"/>
+			<jdbc-user-service data-source-ref="dataSource"
+                users-by-username-query="select user_name, password, enabled from USERS where user_name = ?"
+                authorities-by-username-query="select u.user_name, ur.authority from USERS u, USERS_ROLES ur where u.user_id = ur.user_id and u.user_name = ? " />
+		</authentication-provider>
+	</authentication-manager>
+	
+	<beans:bean id="dataSource"
+        class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <beans:property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <beans:property name="url"
+            value="jdbc:mysql://localhost:3306/springsec" />
+        <beans:property name="username" value="root" />
+        <beans:property name="password" value="" />
+    </beans:bean>
+    
+    <!-- <beans:bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<beans:property name="cacheSeconds" value="0" />
+	</beans:bean> -->
+    
+    <!-- <beans:bean id = "userDetailsService" class="org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl">
+    	<beans:property name="dataSource"  ref = "dataSource"/>
+    </beans:bean> -->
+
+</beans:beans>
