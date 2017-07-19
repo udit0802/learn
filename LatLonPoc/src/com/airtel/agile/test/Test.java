@@ -35,6 +35,25 @@ public class Test {
 		}
 		long time4 = System.currentTimeMillis();
 		System.out.println("time taken to run the test : " + (time4 - time3));
+		
+		if(LatLonUtils.isLocationOnPath(new LatLng(28.479559, 77.086754), makeList(28.479600, 77.079877,28.477100, 77.082040,28.479564, 77.083506), false, 400)){
+			System.out.println("within deviation");
+		}else{
+			System.out.println("outside deviation");
+		}
+		
+		if(LatLonUtils.isLocationOnPath(new LatLng(28.481205, 77.085954), makeList(28.479600, 77.079877,28.477100, 77.082040,28.479564, 77.083506), true, 300)){
+			System.out.println("within deviation");
+		}else{
+			System.out.println("outside deviation");
+		}
+		
+		if(LatLonUtils.isLocationOnPath(new LatLng(28.490645, 77.08346), makeList(28.490995, 77.078436,28.490745, 77.079743,28.490079, 77.079091), true,300)){
+			System.out.println("within deviation");
+		}else{
+			System.out.println("outside deviation");
+		}
+		
 //		long time5 = System.currentTimeMillis();
 //		if(LatLonUtils.isLocationOnPath(new LatLng(), makeList(), false, 1000)){
 //			System.out.println("within deviation");
